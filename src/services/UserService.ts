@@ -8,7 +8,14 @@ export class UserService extends BaseService<UserEntity> {
   }
 
   async createUser(data: SignupForm): Promise<UserEntity> {
-    const password_hash = await Bun.password.hash(data.password);
+    // Using bcrypt explicitly (not Bun's default argon2id) per assignment spec.
+    // Cost factor 10 is bcrypt's standard default — balances brute-force
+    // resistance against hashing time (~100ms on typical hardware).
+    const password_hash = await Bun.password.hash(data.password, {
+      algorithm: "bcrypt",
+      cost: 10,
+    });
+
     return await this.create({
       email: data.email,
       password_hash,
@@ -19,7 +26,10 @@ export class UserService extends BaseService<UserEntity> {
     return await this.findByField("email", email);
   }
 
-  async verifyPassword(plainPassword: string, hash: string): Promise<boolean> {
+  async verifyPassword(
+    plainPassword: string,
+    hash: string,
+  ): Promise<boolean> {
     return await Bun.password.verify(plainPassword, hash);
   }
 }

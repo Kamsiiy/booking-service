@@ -1,9 +1,13 @@
+
+
+import type { UserEntity } from "./user";
 export interface BookingEntity {
   id: number;
   uuid: string;
 
   resource_id: number;
   user_id: number;
+  user?: UserEntity;
 
   start_time: Date;
   end_time: Date;

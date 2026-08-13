@@ -116,9 +116,50 @@ Cancellation is only allowed when there are at least 2 hours before the booking'
 
 The rest of the endpoints (resource CRUD, availability windows, blocking, bookings, search, cancellation policy, history) are being built out across three feature branches — see `ASSIGNMENT.md`. Add curl examples for each endpoint here as you build it.
 
-## Authentication ### Environment variable Add to your `.env`: ``` JWT_SECRET=your-secret-key ``` ### Sign up ```bash curl -X POST http://localhost:3000/auth/signup \ -H "Content-Type: application/json" \ -d '{"email":"test@example.com","password":"password123"}' ``` ### Sign in ```bash curl -X POST http://localhost:3000/auth/signin \ -H "Content-Type: application/json" \ -d '{"email":"test@example.com","password":"password123"}' ``` Response includes a `token` (JWT), valid for 1 hour. ### Protected routes Resource block/unblock and all booking create/update/cancel routes require a valid token. Without a token — returns 401: ```bash curl -X PATCH http://localhost:3000/resources/1/block ``` With a token: ```bash curl -X PATCH http://localhost:3000/resources/1/block \ -H "Authorization: Bearer <token>" ```
 
+## Authentication
+
+### Environment variable
+Add to your `.env`:
+
+​```
+JWT_SECRET=your-secret-key
+​```
+
+### Sign up
+
+```bash
+curl -X POST http://localhost:3000/auth/signup \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@example.com","password":"password123"}'
+```
+
+### Sign in
+
+```bash
+curl -X POST http://localhost:3000/auth/signin \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@example.com","password":"password123"}'
+```
+
+Response includes a `token` (JWT), valid for 1 hour.
+
+### Protected routes
+
+Resource block/unblock and all booking create/update/cancel routes require a valid token.
+
+Without a token — returns 401:
+
+```bash
+curl -X PATCH http://localhost:3000/resources/1/block
+```
+
+With a token:
+
+```bash
+curl -X PATCH http://localhost:3000/resources/1/block \
+  -H "Authorization: Bearer <token>"
+```
 ## Notes
-
 
 - Storage is Postgres, not in-memory — restart-safe, but you're responsible for running migrations.

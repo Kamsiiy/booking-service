@@ -34,4 +34,14 @@ type: String,
 default: "confirmed",
 },
 },
+
+relations: {
+  user: {
+    type: "many-to-one",
+    target: "User",
+    joinColumn: { name: "user_id" },
+    onDelete: "RESTRICT",
+  },
+},
+
 });

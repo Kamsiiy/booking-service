@@ -24,6 +24,7 @@ export class ResourceController {
     return HttpResponse.success("Resource fetched successfully", resource);
   }
    async create(req: Request): Promise<Response> {
+    const auth = await requireAuth(req); if (auth instanceof Response) return auth;
     const body = (await req.json()) as CreateResourceForm;
 
     if (!body.name || !body.type) {
@@ -38,6 +39,7 @@ export class ResourceController {
   }
 
   async update(req: BunRequest<"/resources/:id">): Promise<Response> {
+    const auth = await requireAuth(req); if (auth instanceof Response) return auth;
     const id = Number(req.params.id);
     const body = (await req.json()) as Partial<CreateResourceForm>;
 
@@ -53,6 +55,7 @@ export class ResourceController {
   }
 
   async delete(req: BunRequest<"/resources/:id">): Promise<Response> {
+    const auth = await requireAuth(req); if (auth instanceof Response) return auth;
     const id = Number(req.params.id);
 
     const existing = await this.resourceService.findById(id);
@@ -87,6 +90,7 @@ export class ResourceController {
   }
 
   async setAvailability(req: BunRequest<"/resources/:id/availability">): Promise<Response> {
+    const auth = await requireAuth(req); if (auth instanceof Response) return auth;
     const id = Number(req.params.id);
     const body = (await req.json()) as SetAvailabilityForm;
 
