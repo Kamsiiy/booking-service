@@ -11,7 +11,7 @@ super(BookingSchema);
 this.resourceRepository = AppDataSource.getRepository(ResourceSchema);
 }
 
-async createBooking(data: CreateBookingForm): Promise<BookingEntity> {
+async createBooking(data: Omit<CreateBookingForm, "user_id">, userId: number): Promise<BookingEntity> {
 
     // Validate dates
  if (new Date(data.start_time) >= new Date(data.end_time)) {
@@ -82,6 +82,8 @@ async createBooking(data: CreateBookingForm): Promise<BookingEntity> {
     return await this.create({
 
       ...data,
+
+      user_id: userId,
 
       status: "confirmed",
 

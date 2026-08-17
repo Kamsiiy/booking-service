@@ -19,9 +19,7 @@ resource_id: {
 type: "int",
 },
 
-booked_by: {
-type: String,
-},
+user_id: { type: "int" },
 
 start_time: {
 type: "timestamp",
@@ -36,4 +34,14 @@ type: String,
 default: "confirmed",
 },
 },
+
+relations: {
+  user: {
+    type: "many-to-one",
+    target: "User",
+    joinColumn: { name: "user_id" },
+    onDelete: "RESTRICT",
+  },
+},
+
 });

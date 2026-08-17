@@ -2,6 +2,7 @@ import type { BunRequest } from "bun";
 import HttpResponse from "../common/HttpResponse";
 import { BookingService } from "../services/BookingService";
 import type { CreateBookingForm } from "../forms/booking";
+import { requireAuth } from "../middleware/auth";
 
 export class BookingController {
   private bookingService = new BookingService();
@@ -36,9 +37,10 @@ export class BookingController {
 
   async create(req: Request): Promise<Response> {
     try {
+      const auth = await requireAuth(req); if (auth instanceof Response) return auth;
       const body = await req.json();
 
-      const booking = await this.bookingService.createBooking(body as CreateBookingForm);
+      const booking = await this.bookingService.createBooking(body as CreateBookingForm, auth.userId); 
 
       return HttpResponse.success(
         "Booking created successfully",
@@ -55,6 +57,7 @@ export class BookingController {
 
   async update(req: BunRequest<"/bookings/:id">): Promise<Response> {
     try {
+      const auth = await requireAuth(req); if (auth instanceof Response) return auth;
       const id = Number(req.params.id);
       const body = await req.json();
 
@@ -78,6 +81,7 @@ export class BookingController {
 
   async cancel(req: BunRequest<"/bookings/:id/cancel">): Promise<Response> {
     try {
+      const auth = await requireAuth(req); if (auth instanceof Response) return auth;
       const id = Number(req.params.id);
 
       const booking = await this.bookingService.cancelBooking(id);

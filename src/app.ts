@@ -4,7 +4,7 @@ import { resourceRoutes } from "./routes/resource";
 import { bookingRoutes } from "./routes/booking";
 import { AvailabilityRoutes } from "./routes/availability";
 import { bookingHistoryRoutes } from "./routes/bookingHistory";
-
+import { userRoutes } from "./routes/user";
 const routes = {
   "/health": {
     GET: () => Response.json({ status: "ok" }, { status: 200 }),
@@ -13,6 +13,7 @@ const routes = {
   ...bookingRoutes,
   ...AvailabilityRoutes,
   ...bookingHistoryRoutes,
+   ...userRoutes,
 };
 
 AppDataSource.initialize()
